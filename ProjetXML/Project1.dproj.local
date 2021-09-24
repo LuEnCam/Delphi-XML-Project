@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
-  <Transactions>
-    <Transaction>2021.09.21 14:12:48.841,=I:\DevX\Unit1.pas</Transaction>
-    <Transaction>2021.09.21 14:15:16.235,C:\Users\Luca\Desktop\ProjetXML\Unit1.dfm=I:\DevX\Unit1.dfm</Transaction>
-    <Transaction>2021.09.21 14:15:16.235,C:\Users\Luca\Desktop\ProjetXML\Unit1.pas=I:\DevX\Unit1.pas</Transaction>
-    <Transaction>2021.09.21 16:55:43.257,C:\Users\Luca\Desktop\ProjetXML\Project1.dproj=I:\DevX\Project1.dproj</Transaction>
+	<Transactions>
+    <Transaction>1899.12.30 00:00:00.000.235,C:\Users\Luca\Desktop\ProjetXML\Unit1.dfm=I:\DevX\Unit1.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.841,=I:\DevX\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.257,C:\Users\Luca\Desktop\ProjetXML\Project1.dproj=I:\DevX\Project1.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.235,C:\Users\Luca\Desktop\ProjetXML\Unit1.pas=I:\DevX\Unit1.pas</Transaction>
   </Transactions>
 </BorlandProject>

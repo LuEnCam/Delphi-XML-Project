@@ -5,14 +5,18 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Xml.xmldom, Xml.XMLIntf, Xml.omnixmldom,
-  Xml.XMLDoc;
+  Xml.XMLDoc, Vcl.StdCtrls, Data.DB, MemDS, DBAccess, MyAccess;
 
 type
   TForm1 = class(TForm)
   XMLDocument1: TXMLDocument;
+    Button1: TButton;
+    MyConnection1: TMyConnection;
+    MyQuery1: TMyQuery;
     procedure FormCreate(Sender: TObject);
     procedure ReadFromXML(_FileName: String);
     procedure checkChildNodes(_node: IXMLNode);
+    procedure Button1Click(Sender: TObject);
 
 
   private
@@ -30,8 +34,7 @@ implementation
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-  ReadFromXML('C:\Users\Luca\Desktop\ProjetXML\41101000000215139_QR-IBAN.xml');
-
+  ReadFromXML('C:\Users\Luca\Documents\GitHub\Delphi-XML-Project\ProjetXML\41101000000215139_QR-IBAN.xml');
 end;
 
 procedure TForm1.ReadFromXML(_FileName: String);
@@ -57,6 +60,11 @@ begin
     end;
   end;
 
+end;
+
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+  showmessage('Hello');
 end;
 
 procedure TForm1.checkChildNodes(_node: IXMLNode);

@@ -30,6 +30,7 @@ object Form1: TForm1
     DOMVendorDesc = 'Omni XML'
   end
   object MyConnection1: TMyConnection
+    BeforeConnect = MyConnection1BeforeConnect
     Left = 432
     Top = 24
   end

@@ -15,8 +15,10 @@ type
     MyQuery1: TMyQuery;
     procedure FormCreate(Sender: TObject);
     procedure ReadFromXML(_FileName: String);
+    procedure CreateFromXML();
     procedure checkChildNodes(_node: IXMLNode);
     procedure Button1Click(Sender: TObject);
+    procedure MyConnection1BeforeConnect(Sender: TObject);
 
 
   private
@@ -34,7 +36,31 @@ implementation
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-  ReadFromXML('C:\Users\Luca\Documents\GitHub\Delphi-XML-Project\ProjetXML\41101000000215139_QR-IBAN.xml');
+  MyConnection1.Connect;
+  //ReadFromXML('C:\Users\Luca\Documents\GitHub\Delphi-XML-Project\ProjetXML\41101000000215139_QR-IBAN.xml');
+
+  MyQuery1.SQL.Clear;
+  MyQuery1.SQL.Add('SELECT * FROM wincontr04.sqladres');
+  MyQuery1.Execute;
+
+  MyQuery1.First;
+
+  while not MyQuery1.Eof do
+  begin
+
+    ShowMessage(MyQuery1.FieldByName('cfadcode').asstring);
+
+    MyQuery1.Next;
+
+  end;
+
+end;
+
+procedure TForm1.MyConnection1BeforeConnect(Sender: TObject);
+begin
+  MyConnection1.Server := '127.0.0.1';
+  MyConnection1.Username := 'root';
+  MyConnection1.Database := 'wincontr04';
 end;
 
 procedure TForm1.ReadFromXML(_FileName: String);
@@ -84,6 +110,11 @@ begin
     end;
   end;
 
+end;
+
+procedure TForm1.CreateFromXML();
+begin
+    //////Passage de création du fichier.
 end;
 
 end.

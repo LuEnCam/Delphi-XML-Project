@@ -1,7 +1,7 @@
 object Form1: TForm1
   Left = 0
   Top = 0
-  Caption = 'Form1'
+  Caption = 'XML Project'
   ClientHeight = 488
   ClientWidth = 595
   Color = clBtnFace
@@ -25,7 +25,7 @@ object Form1: TForm1
   end
   object XMLDocument1: TXMLDocument
     FileName = 'C:\Users\Luca\Desktop\ProjetXML\41101000000215139_QR-IBAN.xml'
-    Left = 528
+    Left = 72
     Top = 24
     DOMVendorDesc = 'Omni XML'
   end
@@ -38,5 +38,10 @@ object Form1: TForm1
     Connection = MyConnection1
     Left = 168
     Top = 32
+  end
+  object XMLCreated: TXMLDocument
+    Left = 528
+    Top = 24
+    DOMVendorDesc = 'Omni XML'
   end
 end

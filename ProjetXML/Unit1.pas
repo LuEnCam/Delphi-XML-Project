@@ -13,9 +13,10 @@ type
     Button1: TButton;
     MyConnection1: TMyConnection;
     MyQuery1: TMyQuery;
+    XMLCreated: TXMLDocument;
     procedure FormCreate(Sender: TObject);
     procedure ReadFromXML(_FileName: String);
-    procedure CreateFromXML();
+    procedure CreateFromXML(_filename:String);
     procedure checkChildNodes(_node: IXMLNode);
     procedure Button1Click(Sender: TObject);
     procedure MyConnection1BeforeConnect(Sender: TObject);
@@ -36,8 +37,13 @@ implementation
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-  MyConnection1.Connect;
-  //ReadFromXML('C:\Users\Luca\Documents\GitHub\Delphi-XML-Project\ProjetXML\41101000000215139_QR-IBAN.xml');
+  try
+    MyConnection1.Connect;
+    //ReadFromXML('C:\Users\Luca\Documents\GitHub\Delphi-XML-Project\ProjetXML\41101000000215139_QR-IBAN.xml');
+
+  except
+    showmessage('Unable to connect do database.');
+  end;
 
   MyQuery1.SQL.Clear;
   MyQuery1.SQL.Add('SELECT * FROM wincontr04.sqladres');
@@ -45,14 +51,10 @@ begin
 
   MyQuery1.First;
 
-  while not MyQuery1.Eof do
-  begin
+  CreateFromXML('.\XMLCreated.xml');
+  //ShowMessage(MyQuery1.FieldByName('cfadcode').asstring);
+  ShowMessage(XMLCreated.XML.Text);
 
-    ShowMessage(MyQuery1.FieldByName('cfadcode').asstring);
-
-    MyQuery1.Next;
-
-  end;
 
 end;
 
@@ -112,9 +114,25 @@ begin
 
 end;
 
-procedure TForm1.CreateFromXML();
+procedure TForm1.CreateFromXML(_filename:String);
+var
+  nodeToAdd : IXMLNode;
+  Leaf : IXMLNode;
 begin
-    //////Passage de création du fichier.
+  XMLCreated.Active := true;
+  XMLCreated.FileName := _filename;
+
+  nodeToAdd := XMLCreated.CreateNode('Data',ntElement);
+  Leaf := XMLCreated.CreateElement('Code','');
+  Leaf.NodeValue := MyQuery1.FieldByName('cfadcode').AsString;
+
+  nodeToAdd.ChildNodes.Add(Leaf);
+
+  XMLCreated.AddChild('Test');
+  XMLCreated.ChildNodes.FindNode('Test').ChildNodes.Add(nodeToAdd);
+  //XMLCreated.ChildNodes.Last.ChildNodes.Add(Leaf);
+
+  XMLCreated.SaveToFile();
 end;
 
 end.

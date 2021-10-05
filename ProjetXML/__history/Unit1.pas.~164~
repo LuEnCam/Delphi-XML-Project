@@ -115,22 +115,50 @@ begin
 end;
 
 procedure TForm1.CreateFromXML(_filename:String);
+const
+  CIndentation = '      ';
 var
   nodeToAdd : IXMLNode;
   Leaf : IXMLNode;
+  temp : IXMLDocument;
+  stream : TStream;
+
+  Vpn_ii : integer;
+
 begin
+
+  stream := TStream.Create();
   XMLCreated.Active := true;
   XMLCreated.FileName := _filename;
-  //XMLCreated.SaveToFile();
 
   nodeToAdd := XMLCreated.CreateNode('Data',ntElement);
-  Leaf := XMLCreated.CreateElement('Code','');
-  Leaf.NodeValue := MyQuery1.FieldByName('cfadcode').AsString;
+
+  Leaf := XMLCreated.CreateElement('Codes','');
+  Vpn_ii := 0;
+  while not MYQuery1.Eof do
+  begin
+    Leaf.AddChild('Code_'+Vpn_ii+',Vpn_ii);
+    Leaf.ChildNodes.Get(Vpn_ii).NodeValue := 'text';
+    Leaf.NodeValue := MyQuery1.FieldByName('cfadcode').AsString;
+
+    //nodeToAdd.ChildNodes.Add(Leaf);
+    inc(VPn_ii);
+    MyQuery1.Next;
+  end;
 
   nodeToAdd.ChildNodes.Add(Leaf);
 
-  XMLCreated.DocumentElement.AddChild(nodeToAdd);
-  XMLCreated.DocumentElement.ChildNodes.Last.ChildNodes.Add(Leaf);
+  XMLCreated.AddChild('Test');
+  XMLCreated.ChildNodes.FindNode('Test').ChildNodes.Add(nodeToAdd);
+  //XMLCreated.ChildNodes.Last.ChildNodes.Add(Leaf);
+
+  //Formattage de XML avec indentation correcte:
+  temp := TXMLDocument.Create(nil);
+  temp.LoadFromXML(XMLCreated.XML.Text);
+  temp.XML.Text:=Xml.XMLDoc.FormatXMLData(temp.XML.Text);
+  temp.Active := true;
+  temp.SaveToFile(_filename);
+
 end;
 
 end.

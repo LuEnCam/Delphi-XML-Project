@@ -1,0 +1,97 @@
+object Form1: TForm1
+  Left = 0
+  Top = 0
+  Caption = 'XML Project'
+  ClientHeight = 488
+  ClientWidth = 595
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object label_connection: TLabel
+    Left = 32
+    Top = 16
+    Width = 147
+    Height = 21
+    Caption = 'label_connection'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -17
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object label_username: TLabel
+    Left = 21
+    Top = 59
+    Width = 48
+    Height = 13
+    Caption = 'Username'
+  end
+  object label_password: TLabel
+    Left = 21
+    Top = 86
+    Width = 46
+    Height = 13
+    Caption = 'Password'
+  end
+  object Button1: TButton
+    Left = 376
+    Top = 216
+    Width = 75
+    Height = 25
+    Caption = 'Execute XML'
+    TabOrder = 0
+    OnClick = Button1Click
+  end
+  object button_connect: TButton
+    Left = 229
+    Top = 81
+    Width = 75
+    Height = 25
+    Caption = 'Connect'
+    TabOrder = 1
+  end
+  object Edit1: TEdit
+    Left = 75
+    Top = 56
+    Width = 148
+    Height = 21
+    TabOrder = 2
+  end
+  object Edit2: TEdit
+    Left = 75
+    Top = 83
+    Width = 148
+    Height = 21
+    TabOrder = 3
+  end
+  object XMLDocument1: TXMLDocument
+    FileName = 'C:\Users\Luca\Desktop\ProjetXML\41101000000215139_QR-IBAN.xml'
+    Options = [doNodeAutoCreate, doNodeAutoIndent, doAttrNull, doAutoPrefix, doNamespaceDecl]
+    Left = 216
+    Top = 176
+    DOMVendorDesc = 'Omni XML'
+  end
+  object MyConnection1: TMyConnection
+    BeforeConnect = MyConnection1BeforeConnect
+    Left = 424
+    Top = 88
+  end
+  object MyQuery1: TMyQuery
+    Connection = MyConnection1
+    Left = 216
+    Top = 136
+  end
+  object XMLCreated: TXMLDocument
+    Left = 512
+    Top = 96
+    DOMVendorDesc = 'Omni XML'
+  end
+end

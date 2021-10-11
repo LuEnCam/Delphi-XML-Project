@@ -5,7 +5,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Xml.xmldom, Xml.XMLIntf, Xml.omnixmldom,
-  Xml.XMLDoc, Vcl.StdCtrls, Data.DB, MemDS, DBAccess, MyAccess,msxml, msxml2_TLB;
+  Xml.XMLDoc, Vcl.StdCtrls, Data.DB, MemDS, DBAccess, MyAccess,msxml,
+  Xml.Win.msxmldom;
 
 type
   TForm1 = class(TForm)
@@ -30,6 +31,8 @@ type
     procedure checkChildNodes(_node: IXMLNode);
     procedure Button1Click(Sender: TObject);
     procedure button_connectClick(Sender: TObject);
+    function ValidXML(const xmlFile: String; out err: IXMLDOMParseError): Boolean;
+    procedure CreateFromXML2(_filename:String);
 
 
   private
@@ -99,7 +102,8 @@ begin
 
   MyQuery1.First;
 
-  CreateFromXML('.\XMLCreated.xml');
+  //CreateFromXML('.\XMLCreated.xml');
+  CreateFromXML2('.\XMLCreated.xml');
   //ShowMessage(MyQuery1.FieldByName('cfadcode').asstring);
   ShowMessage(XMLCreated.XML.Text);
 end;
@@ -174,6 +178,7 @@ begin
 
   Leaf := XMLCreated.CreateElement('Codes','');
   Vpn_ii := 0;
+
   while not MYQuery1.Eof do
   begin
     //Leaf.AddChild('Code_'+inttostr(Vpn_ii)+'',Vpn_ii);
@@ -225,6 +230,13 @@ begin
   begin
     err := nil;
   end;
+
+end;
+
+procedure TForm1.CreateFromXML2(_filename:String);
+begin
+    //////
+end;
 
 end.
 

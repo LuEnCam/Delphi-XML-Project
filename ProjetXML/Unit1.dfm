@@ -110,7 +110,7 @@ object Form1: TForm1
     Options = [doNodeAutoCreate, doNodeAutoIndent, doAttrNull, doAutoPrefix, doNamespaceDecl]
     Left = 344
     Top = 104
-    DOMVendorDesc = 'Omni XML'
+    DOMVendorDesc = 'MSXML'
   end
   object MyConnection1: TMyConnection
     Left = 432

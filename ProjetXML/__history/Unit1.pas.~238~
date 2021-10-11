@@ -5,7 +5,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Xml.xmldom, Xml.XMLIntf, Xml.omnixmldom,
-  Xml.XMLDoc, Vcl.StdCtrls, Data.DB, MemDS, DBAccess, MyAccess,msxml;
+  Xml.XMLDoc, Vcl.StdCtrls, Data.DB, MemDS, DBAccess, MyAccess,msxml,
+  Xml.Win.msxmldom;
 
 type
   TForm1 = class(TForm)
@@ -31,6 +32,7 @@ type
     procedure Button1Click(Sender: TObject);
     procedure button_connectClick(Sender: TObject);
     function ValidXML(const xmlFile: String; out err: IXMLDOMParseError): Boolean;
+    procedure CreateFromXML2(_filename:String);
 
 
   private
@@ -41,7 +43,6 @@ type
 
 var
   Form1: TForm1;
-
 
 implementation
 
@@ -102,6 +103,7 @@ begin
   MyQuery1.First;
 
   CreateFromXML('.\XMLCreated.xml');
+  //CreateFromXML2('.\XMLCreated2.xml');
   //ShowMessage(MyQuery1.FieldByName('cfadcode').asstring);
   ShowMessage(XMLCreated.XML.Text);
 end;
@@ -172,10 +174,11 @@ begin
   XMLCreated.Active := true;
   XMLCreated.FileName := _filename;
 
-  nodeToAdd := XMLCreated.CreateNode('Data',ntElement);
+  nodeToAdd := XMLCreated.CreateNode('Data');
 
   Leaf := XMLCreated.CreateElement('Codes','');
   Vpn_ii := 0;
+
   while not MYQuery1.Eof do
   begin
     //Leaf.AddChild('Code_'+inttostr(Vpn_ii)+'',Vpn_ii);
@@ -228,6 +231,33 @@ begin
     err := nil;
   end;
 
+end;
+
+procedure TForm1.CreateFromXML2(_filename:String);
+var
+  LDocument: IXMLDocument;
+  LNodeElement, NodeCData, NodeText: IXMLNode;
+  temp : IXMLDocument;
+begin
+  LDocument := TXMLDocument.Create(nil);
+  LDocument.Active := True;
+
+  { Define document content. }
+  LDocument.DocumentElement := LDocument.CreateNode('ThisIsTheDocumentElement', ntElement, '');
+  LDocument.DocumentElement.Attributes['attrName'] := 'attrValue';
+  LNodeElement := LDocument.DocumentElement.AddChild('ThisElementHasText', -1);
+  LNodeElement.Text := 'Inner text.';
+  NodeCData := LDocument.CreateNode('any characters here', ntCData, '');
+  LDocument.DocumentElement.ChildNodes.Add(NodeCData);
+  NodeText := LDocument.CreateNode('This is a text node.', ntText, '');
+  LDocument.DocumentElement.ChildNodes.Add(NodeText);
+
+  //Formattage de XML avec indentation correcte:
+  temp := TXMLDocument.Create(nil);
+  temp.LoadFromXML(LDocument.XML.Text);
+  temp.XML.Text:=Xml.XMLDoc.FormatXMLData(temp.XML.Text);
+  temp.Active := true;
+  temp.SaveToFile(_filename);
 end;
 
 end.

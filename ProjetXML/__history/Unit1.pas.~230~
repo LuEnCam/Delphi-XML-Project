@@ -5,7 +5,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Xml.xmldom, Xml.XMLIntf, Xml.omnixmldom,
-  Xml.XMLDoc, Vcl.StdCtrls, Data.DB, MemDS, DBAccess, MyAccess,msxml;
+  Xml.XMLDoc, Vcl.StdCtrls, Data.DB, MemDS, DBAccess, MyAccess,msxml,
+  Xml.Win.msxmldom;
 
 type
   TForm1 = class(TForm)
@@ -30,6 +31,8 @@ type
     procedure checkChildNodes(_node: IXMLNode);
     procedure Button1Click(Sender: TObject);
     procedure button_connectClick(Sender: TObject);
+    function ValidXML(const xmlFile: String; out err: IXMLDOMParseError): Boolean;
+    procedure CreateFromXML2(_filename:String);
 
 
   private
@@ -40,9 +43,6 @@ type
 
 var
   Form1: TForm1;
-
-uses
-  MSXML2_TBL;
 
 implementation
 
@@ -102,7 +102,8 @@ begin
 
   MyQuery1.First;
 
-  CreateFromXML('.\XMLCreated.xml');
+  //CreateFromXML('.\XMLCreated.xml');
+  CreateFromXML2('.\XMLCreated.xml');
   //ShowMessage(MyQuery1.FieldByName('cfadcode').asstring);
   ShowMessage(XMLCreated.XML.Text);
 end;
@@ -177,6 +178,7 @@ begin
 
   Leaf := XMLCreated.CreateElement('Codes','');
   Vpn_ii := 0;
+
   while not MYQuery1.Eof do
   begin
     //Leaf.AddChild('Code_'+inttostr(Vpn_ii)+'',Vpn_ii);
@@ -228,6 +230,55 @@ begin
   begin
     err := nil;
   end;
+
+end;
+
+procedure TForm1.CreateFromXML2(_filename:String);
+const
+  CIndentation = '      ';
+var
+  nodeToAdd : IXMLNode;
+  Leaf : IXMLNode;
+  temp : IXMLDocument;
+  stream : TStream;
+
+  Vpn_ii : integer;
+
+begin
+
+  stream := TStream.Create();
+  XMLCreated.Active := true;
+  XMLCreated.FileName := _filename;
+
+  nodeToAdd := XMLCreated.CreateNode('Data',ntElement);
+
+  Leaf := XMLCreated.CreateElement('Codes','');
+  Vpn_ii := 0;
+
+  while not MYQuery1.Eof do
+  begin
+    //Leaf.AddChild('Code_'+inttostr(Vpn_ii)+'',Vpn_ii);
+    Leaf.AddChild('Code_'+inttostr(Vpn_ii));
+    Leaf.ChildNodes.FindNode('Code_'+inttostr(Vpn_ii)).AddChild('Test').Text := MyQuery1.FieldByName('cfadcode').asstring;
+    //nodeToAdd.ChildNodes.Add(Leaf);
+    inc(VPn_ii);
+    MyQuery1.Next;
+  end;
+
+  nodeToAdd.ChildNodes.Add(Leaf);
+
+  XMLCreated.AddChild('Test');
+  XMLCreated.ChildNodes.FindNode('Test').ChildNodes.Add(nodeToAdd);
+  //XMLCreated.ChildNodes.Last.ChildNodes.Add(Leaf);
+
+  //Formattage de XML avec indentation correcte:
+  temp := TXMLDocument.Create(nil);
+  temp.LoadFromXML(XMLCreated.XML.Text);
+  temp.XML.Text:=Xml.XMLDoc.FormatXMLData(temp.XML.Text);
+  temp.Active := true;
+  temp.SaveToFile(_filename);
+
+end;
 
 end.
 
